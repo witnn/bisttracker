@@ -160,7 +160,7 @@ export default function AddAssetModal({ onClose, onSuccess, editItem }: AddAsset
               value={lots}
               onChange={(e) => setLots(e.target.value)}
               required 
-              min="0.01"
+              min={activeTab === 'STOCK' ? "1" : "0.01"}
               step={activeTab === 'STOCK' ? "1" : "0.01"}
             />
           </div>
