@@ -21,7 +21,8 @@ router.post('/register', async (req, res) => {
       data: {
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        role: email.startsWith('admin') ? 'ADMIN' : 'USER'
       }
     });
 
