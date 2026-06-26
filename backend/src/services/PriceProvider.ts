@@ -51,12 +51,39 @@ export class YahooFinanceProvider implements IPriceProvider {
     }
 
     try {
-      const result: any = await yahooFinance.quote(formattedSymbol);
-      if (!result || result.regularMarketPrice === undefined) {
+      let result: any = null;
+      let price: number | undefined;
+      let currency: string | undefined;
+      let changePercent: number | undefined;
+      let shortName: string | undefined;
+      let longName: string | undefined;
+
+      try {
+        result = await yahooFinance.quote(formattedSymbol);
+        price = result?.regularMarketPrice;
+        currency = result?.currency;
+        changePercent = result?.regularMarketChangePercent;
+        shortName = result?.shortName;
+        longName = result?.longName;
+      } catch (e) {
+        console.warn(`YahooFinance library failed for ${formattedSymbol}, trying raw fetch...`);
+      }
+
+      if (price === undefined) {
+        const fallbackRes = await fetch(`https://query2.finance.yahoo.com/v8/finance/chart/${formattedSymbol}`);
+        const fallbackData = await fallbackRes.json();
+        const meta = fallbackData?.chart?.result?.[0]?.meta;
+        if (meta && meta.regularMarketPrice !== undefined) {
+          price = meta.regularMarketPrice;
+          currency = meta.currency;
+          changePercent = meta.regularMarketPrice > 0 ? ((meta.regularMarketPrice - meta.chartPreviousClose) / meta.chartPreviousClose) * 100 : 0;
+        }
+      }
+
+      if (price === undefined) {
         return null;
       }
 
-      let price = result.regularMarketPrice;
       const originalSymbol = symbol.toUpperCase().trim();
       if (originalSymbol === 'GRAMALTIN' || originalSymbol === 'GRAMGUMUS') {
         try {
@@ -67,16 +94,27 @@ export class YahooFinanceProvider implements IPriceProvider {
             price = price / 31.1034768; // fallback
           }
         } catch (e) {
-          price = price / 31.1034768;
+          try {
+            const tryFallback = await fetch('https://query2.finance.yahoo.com/v8/finance/chart/TRY=X');
+            const tryFallbackData = await tryFallback.json();
+            const tryPrice = tryFallbackData?.chart?.result?.[0]?.meta?.regularMarketPrice;
+            if (tryPrice) {
+               price = (price / 31.1034768) * tryPrice;
+            } else {
+               price = price / 31.1034768;
+            }
+          } catch(e2) {
+            price = price / 31.1034768;
+          }
         }
       }
 
       const priceData: StockPrice = {
         symbol: originalSymbol,
         price: price,
-        currency: result.currency,
-        regularMarketChangePercent: result.regularMarketChangePercent,
-        name: originalSymbol === 'GRAMALTIN' ? 'Altın (Gram)' : originalSymbol === 'GRAMGUMUS' ? 'Gümüş (Gram)' : (result.shortName || result.longName || originalSymbol),
+        currency: currency,
+        regularMarketChangePercent: changePercent,
+        name: originalSymbol === 'GRAMALTIN' ? 'Altın (Gram)' : originalSymbol === 'GRAMGUMUS' ? 'Gümüş (Gram)' : (shortName || longName || originalSymbol),
       };
 
       // Cache'e yaz
