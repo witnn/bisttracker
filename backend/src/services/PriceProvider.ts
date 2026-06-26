@@ -70,13 +70,38 @@ export class YahooFinanceProvider implements IPriceProvider {
       }
 
       if (price === undefined) {
-        const fallbackRes = await fetch(`https://query2.finance.yahoo.com/v8/finance/chart/${formattedSymbol}`);
-        const fallbackData = await fallbackRes.json();
-        const meta = fallbackData?.chart?.result?.[0]?.meta;
-        if (meta && meta.regularMarketPrice !== undefined) {
-          price = meta.regularMarketPrice;
-          currency = meta.currency;
-          changePercent = meta.regularMarketPrice > 0 ? ((meta.regularMarketPrice - meta.chartPreviousClose) / meta.chartPreviousClose) * 100 : 0;
+        try {
+          const originalSymbol = symbol.toUpperCase().trim();
+          const bpSymbol = originalSymbol.replace('.IS', '');
+          // Bigpara only for BIST stocks (not metals)
+          if (bpSymbol !== 'GRAMALTIN' && bpSymbol !== 'GRAMGUMUS') {
+            const bpRes = await fetch(`https://bigpara.hurriyet.com.tr/api/v1/borsa/hisseyuzeysel/${bpSymbol}`);
+            const bpData = await bpRes.json();
+            if (bpData && bpData.data && bpData.data.hisseYuzeysel) {
+              const h = bpData.data.hisseYuzeysel;
+              price = h.kapanis || h.alis || h.satis;
+              currency = 'TRY';
+              changePercent = h.yuzdedegisim;
+              shortName = h.aciklama || originalSymbol;
+            }
+          }
+        } catch (e) {
+          console.warn('Bigpara fetch failed');
+        }
+      }
+
+      if (price === undefined) {
+        try {
+          const fallbackRes = await fetch(`https://query2.finance.yahoo.com/v8/finance/chart/${formattedSymbol}`);
+          const fallbackData = await fallbackRes.json();
+          const meta = fallbackData?.chart?.result?.[0]?.meta;
+          if (meta && meta.regularMarketPrice !== undefined) {
+            price = meta.regularMarketPrice;
+            currency = meta.currency;
+            changePercent = meta.regularMarketPrice > 0 ? ((meta.regularMarketPrice - meta.chartPreviousClose) / meta.chartPreviousClose) * 100 : 0;
+          }
+        } catch (e) {
+           console.warn('Yahoo raw fetch failed');
         }
       }
 
