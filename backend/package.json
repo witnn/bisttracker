@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "prisma:generate": "node ./node_modules/prisma/build/index.js generate",
+    "prisma:push": "node ./node_modules/prisma/build/index.js db push",
     "prisma:studio": "node ./node_modules/prisma/build/index.js studio"
   },
   "keywords": [],
