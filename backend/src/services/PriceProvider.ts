@@ -69,13 +69,20 @@ export class YahooFinanceProvider implements IPriceProvider {
         console.warn(`YahooFinance library failed for ${formattedSymbol}, trying raw fetch...`);
       }
 
+      const fetchOptions = {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'application/json'
+        }
+      };
+
       if (price === undefined) {
         try {
           const originalSymbol = symbol.toUpperCase().trim();
           const bpSymbol = originalSymbol.replace('.IS', '');
           // Bigpara only for BIST stocks (not metals)
           if (bpSymbol !== 'GRAMALTIN' && bpSymbol !== 'GRAMGUMUS') {
-            const bpRes = await fetch(`https://bigpara.hurriyet.com.tr/api/v1/borsa/hisseyuzeysel/${bpSymbol}`);
+            const bpRes = await fetch(`https://bigpara.hurriyet.com.tr/api/v1/borsa/hisseyuzeysel/${bpSymbol}`, fetchOptions);
             const bpData = await bpRes.json();
             if (bpData && bpData.data && bpData.data.hisseYuzeysel) {
               const h = bpData.data.hisseYuzeysel;
@@ -92,7 +99,7 @@ export class YahooFinanceProvider implements IPriceProvider {
 
       if (price === undefined) {
         try {
-          const fallbackRes = await fetch(`https://query2.finance.yahoo.com/v8/finance/chart/${formattedSymbol}`);
+          const fallbackRes = await fetch(`https://query2.finance.yahoo.com/v8/finance/chart/${formattedSymbol}`, fetchOptions);
           const fallbackData = await fallbackRes.json();
           const meta = fallbackData?.chart?.result?.[0]?.meta;
           if (meta && meta.regularMarketPrice !== undefined) {
@@ -120,7 +127,7 @@ export class YahooFinanceProvider implements IPriceProvider {
           }
         } catch (e) {
           try {
-            const tryFallback = await fetch('https://query2.finance.yahoo.com/v8/finance/chart/TRY=X');
+            const tryFallback = await fetch('https://query2.finance.yahoo.com/v8/finance/chart/TRY=X', fetchOptions);
             const tryFallbackData = await tryFallback.json();
             const tryPrice = tryFallbackData?.chart?.result?.[0]?.meta?.regularMarketPrice;
             if (tryPrice) {
