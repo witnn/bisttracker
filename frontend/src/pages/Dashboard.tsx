@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, TrendingUp, TrendingDown, Trash2, Edit2 } from 'lucide-react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, AreaChart, Area, XAxis, YAxis, CartesianGrid, ReferenceLine } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, AreaChart, Area, XAxis, YAxis, CartesianGrid } from 'recharts';
 import AddAssetModal from '../components/AddAssetModal';
 import { useAuth } from '../context/AuthContext';
 import { API_URL } from '../config';
@@ -214,12 +214,12 @@ export default function Dashboard() {
                       outerRadius={90}
                       paddingAngle={5}
                     >
-                      {groupedItems.map((entry, index) => (
+                      {groupedItems.map((_, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
                     <Tooltip 
-                      formatter={(value: number) => formatCurrency(value)}
+                      formatter={(value: any) => formatCurrency(Number(value))}
                       contentStyle={{ backgroundColor: 'var(--glass-surface)', backdropFilter: 'blur(10px)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--text-primary)' }}
                       itemStyle={{ color: 'var(--text-primary)', fontWeight: 'bold' }}
                     />
@@ -266,7 +266,7 @@ export default function Dashboard() {
                       width={50}
                     />
                     <Tooltip 
-                      formatter={(value: number) => formatCurrency(value)}
+                      formatter={(value: any) => formatCurrency(Number(value))}
                       labelFormatter={(label) => new Date(label as string).toLocaleDateString('tr-TR')}
                       contentStyle={{ backgroundColor: 'var(--glass-surface)', backdropFilter: 'blur(10px)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--text-primary)' }}
                       itemStyle={{ color: '#3b82f6', fontWeight: 'bold' }}
