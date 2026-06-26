@@ -1,0 +1,242 @@
+.mt-24 {
+  margin-top: 24px;
+}
+
+.py-24 {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-sm {
+  font-size: 0.85rem;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-top-section {
+  display: grid;
+  grid-template-columns: 360px 1fr 360px;
+  gap: 24px;
+}
+
+.summary-cards-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.prices-column {
+  position: relative;
+  min-height: 0;
+}
+
+.price-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: var(--glass-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-top: 1px solid var(--glass-border-highlight);
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.price-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.08); 
+}
+
+:root[data-theme="light"] .price-card:hover {
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 24px rgba(31, 38, 135, 0.1);
+}
+
+.symbol-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--primary-color);
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.company-name {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 6px;
+}
+
+.price-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Glassmorphism Scrollbar for Prices Column */
+.prices-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.prices-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.prices-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.prices-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+:root[data-theme="light"] .prices-scroll-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+:root[data-theme="light"] .prices-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+:root[data-theme="light"] .prices-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 1200px) {
+  .dashboard-top-section {
+    grid-template-columns: 320px 1fr;
+  }
+  .prices-column {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 860px) {
+  .dashboard-top-section {
+    grid-template-columns: 1fr;
+  }
+  .prices-column {
+    max-height: 400px; /* On mobile, give it a max height since it's stacked */
+  }
+}
+
+.portfolio-section {
+  padding: 0;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.section-header h2 {
+  font-size: 1.1rem;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.symbol-link {
+  font-weight: 600;
+  padding: 4px 8px;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.symbol-link:hover {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.action-btn.text-danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger-color);
+}
+
+/* Remove outline from recharts elements */
+.recharts-wrapper,
+.recharts-surface,
+.recharts-pie,
+.recharts-area,
+.recharts-sector,
+.recharts-active-shape,
+.recharts-wrapper * {
+  outline: none !important;
+}
+
+/* Make chart container clickable */
+.chart-container.clickable {
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.chart-container.clickable:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* History Modal Chart */
+.history-modal-content {
+  width: 90vw;
+  max-width: 1000px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-modal-chart {
+  flex: 1;
+  min-height: 0;
+  margin-top: 16px;
+}
+
+

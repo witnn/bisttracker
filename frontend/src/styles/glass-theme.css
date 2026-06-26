@@ -1,0 +1,211 @@
+/* 
+   UX-Centric Glassmorphism Theme 
+   Variables and overrides for premium glass feel.
+*/
+
+:root {
+  /* Dark Mode Mesh Gradient Pattern Background */
+  --theme-bg: #0b0f19;
+  --glass-bg-base: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+                   radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%);
+  
+  --glass-surface: rgba(17, 24, 39, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-highlight: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --glass-blur: blur(16px);
+  
+  --input-bg: rgba(0, 0, 0, 0.2);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --input-focus: var(--primary-color);
+  
+  --overlay-bg: rgba(0, 0, 0, 0.6);
+  --text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="light"] {
+  /* Light Mode Mesh Gradient Pattern Background */
+  --theme-bg: #e2e8f0;
+  --glass-bg-base: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.3), transparent 45%),
+                   radial-gradient(circle at 90% 40%, rgba(168, 85, 247, 0.25), transparent 45%),
+                   radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.2), transparent 45%);
+                   
+  --glass-surface: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-border-highlight: rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --glass-blur: blur(16px);
+  
+  --input-bg: rgba(255, 255, 255, 0.7);
+  --input-border: rgba(0, 0, 0, 0.1);
+  --input-focus: var(--primary-color);
+  
+  --overlay-bg: rgba(255, 255, 255, 0.3);
+  --text-shadow: none;
+}
+
+/* Background Application */
+body {
+  background-color: var(--theme-bg) !important;
+  background-image: var(--glass-bg-base) !important;
+  background-attachment: fixed !important;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Base Glass Panel Enhancements */
+.glass-panel {
+  background: var(--glass-surface) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-top: 1px solid var(--glass-border-highlight) !important;
+  border-left: 1px solid var(--glass-border-highlight) !important;
+  box-shadow: var(--glass-shadow) !important;
+  border-radius: 16px !important;
+}
+
+/* Typography Contrast Improvements */
+h1, h2, h3, h4, h5, h6, p, span {
+  text-shadow: var(--text-shadow);
+}
+
+:root[data-theme="light"] h1, 
+:root[data-theme="light"] h2, 
+:root[data-theme="light"] h3, 
+:root[data-theme="light"] p, 
+:root[data-theme="light"] span {
+  text-shadow: none;
+}
+
+/* Button Hierarchy Improvements */
+.btn {
+  /* Primary buttons shouldn't be overly blurry, they need to stand out as solid/semi-solid */
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39) !important;
+  border: 1px solid transparent !important;
+  text-shadow: none !important;
+}
+
+.btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
+}
+
+.btn-secondary {
+  /* Secondary buttons use the glass aesthetic */
+  background: var(--glass-surface) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid var(--glass-border-highlight) !important;
+}
+
+:root[data-theme="light"] .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Danger Button */
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  color: var(--danger-color) !important;
+  box-shadow: none !important;
+}
+
+.btn-danger:hover {
+  background: var(--danger-color) !important;
+  color: white !important;
+  box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.39) !important;
+}
+
+/* Form Inputs - UX Prioritized */
+.input-field {
+  background: var(--input-bg) !important;
+  border: 1px solid var(--input-border) !important;
+  color: var(--text-primary) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.2s ease !important;
+  border-radius: 8px !important;
+}
+
+.input-field:focus, .input-field:focus-visible {
+  outline: none !important;
+  /* Sharp, distinct focus ring so it's not lost in the blur */
+  border-color: var(--input-focus) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Table UX - Clear row distinction */
+tr {
+  transition: background-color 0.2s ease;
+}
+
+tr:hover td {
+  /* Make hover distinct but not blurry to keep text crisp */
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+:root[data-theme="light"] tr:hover td {
+  background: rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Navbar Specific Adjustment */
+.top-navbar {
+  border-bottom: 1px solid var(--glass-border-highlight) !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  border-radius: 0 !important;
+}
+
+/* Theme Switch */
+.theme-switch-wrapper {
+  margin-left: auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.theme-switch {
+  position: relative;
+  width: 68px;
+  height: 34px;
+  background: var(--input-bg);
+  border-radius: 34px;
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  transition: all 0.3s ease;
+}
+
+.switch-handle {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), background-color 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  z-index: 2;
+}
+
+:root[data-theme="light"] .switch-handle {
+  transform: translateX(34px);
+  background: #f59e0b; /* Sun amber color */
+}
